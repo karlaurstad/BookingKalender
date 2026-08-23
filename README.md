@@ -68,10 +68,18 @@ nettsiden eller koden.
    kalenderens ICS-feed. Folk må få vite det *før* de oppgir nummeret
    sitt. Lim inn i beskrivelsesfeltet øverst i skjemaet:
 
-   > Merk: navn, telefon, e-post og formål blir publisert offentlig i
-   > bookingkalenderen på nettsiden, slik at naboer kan se hvem som har
-   > booket og eventuelt avtale seg imellom. Ikke fyll ut skjemaet
-   > dersom du ikke ønsker dette.
+   > Slik behandler vi opplysningene dine: Navn, telefon, e-post og
+   > formål blir publisert offentlig i bookingkalenderen på nettsiden,
+   > slik at naboer kan se hvem som har booket og avtale seg imellom
+   > ved behov. Opplysningene er synlige for alle på internett – ikke
+   > bare for folk i bygda. Ønsker du ikke det, kan du i stedet booke
+   > ved å kontakte styret på sparbuvel@gmail.com. Vil du ha en booking
+   > fjernet i ettertid, ta kontakt på samme adresse.
+
+   Varselet gir bevisst en **alternativ vei**: den som ikke vil stå
+   offentlig kan booke via styret, som legger inn hendelsen manuelt med
+   bare fornavn. Uten det ville varselet i praksis stengt folk ute fra
+   et fellesgode.
 
 3. Legg til **nøyaktig** disse spørsmålene (samme rekkefølge er ikke
    nødvendig, men **titlene må stemme eksakt** – de brukes av
