@@ -110,7 +110,19 @@ nettsiden eller koden.
    | Formål / arrangement | Lengde → Maks antall tegn → `60` | «Maks 60 tegn.» |
    | Telefon | Regex → Samsvarer med → `^[0-9 +]{8,15}$` | «Skriv et gyldig telefonnummer, f.eks. 90012345.» |
 
-5. Noter skjemaets lenke (Send-knappen → lenke-ikon) – denne trengs i
+5. **Rett opp bekreftelsesmeldingen.** Google Skjemaer viser samme
+   melding uansett om scriptet godtar eller avviser bookingen. Står det
+   «Din booking er registrert», får også de som blir avvist (opptatt
+   tidspunkt, dato i fortiden) beskjed om at alt er i orden – og
+   oppdager først i e-posten at det ikke er det. Gå til
+   **Innstillinger → Presentasjon → Bekreftelsesmelding** og bruk en
+   nøytral formulering:
+
+   > Forespørselen er mottatt. Du får en e-post som bekrefter om
+   > tidspunktet er ledig – bookingen er ikke gyldig før du har fått
+   > den bekreftelsen.
+
+6. Noter skjemaets lenke (Send-knappen → lenke-ikon) – denne trengs i
    steg 5.
 
 ### 4. Koble på Apps Script
