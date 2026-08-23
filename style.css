@@ -1,0 +1,125 @@
+:root {
+  --forest: #2f4b3c;
+  --forest-dark: #22362a;
+  --bark: #6b4a34;
+  --cream: #faf6ef;
+  --paper: #ffffff;
+  --ink: #26302a;
+  --muted: #5d6b62;
+  --accent: #d98c3a;
+  --border: #e2ddd0;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.55;
+}
+
+.wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+.site-header {
+  background: linear-gradient(135deg, var(--forest), var(--forest-dark));
+  color: var(--cream);
+  padding: 3rem 0 2.5rem;
+  text-align: center;
+}
+
+.site-header h1 {
+  margin: 0 0 0.5rem;
+  font-size: 2rem;
+}
+
+.tagline {
+  margin: 0 auto 1.5rem;
+  max-width: 32rem;
+  color: #e4e9df;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #2a1c0d;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+main {
+  padding: 2.5rem 1.25rem 3rem;
+}
+
+section {
+  background: var(--paper);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.75rem;
+  margin-bottom: 1.75rem;
+}
+
+h2 {
+  margin-top: 0;
+  color: var(--forest);
+  font-size: 1.25rem;
+}
+
+.info ul {
+  padding-left: 1.2rem;
+  margin: 0 0 1rem;
+}
+
+.info li {
+  margin-bottom: 0.5rem;
+}
+
+.rules {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  background: #f4ede0;
+  border-left: 3px solid var(--bark);
+  border-radius: 4px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.calendar-embed {
+  overflow-x: auto;
+  border-radius: 8px;
+}
+
+.calendar-embed iframe {
+  display: block;
+  min-width: 320px;
+}
+
+.site-footer {
+  text-align: center;
+  padding: 1.5rem 0 2.5rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 480px) {
+  .site-header { padding: 2.25rem 0 2rem; }
+  .site-header h1 { font-size: 1.6rem; }
+  section { padding: 1.25rem; }
+}
