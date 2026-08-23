@@ -63,7 +63,17 @@ nettsiden eller koden.
 
 1. Gå til [forms.google.com](https://forms.google.com) → nytt skjema.
    Tittel: «Book gapahuken – Sparbu Vel».
-2. Legg til **nøyaktig** disse spørsmålene (samme rekkefølge er ikke
+2. **Legg inn personvernvarselet i skjemabeskrivelsen.** Bookinger vises
+   offentlig med navn, telefon og e-post, og de er maskinlesbare via
+   kalenderens ICS-feed. Folk må få vite det *før* de oppgir nummeret
+   sitt. Lim inn i beskrivelsesfeltet øverst i skjemaet:
+
+   > Merk: navn, telefon, e-post og formål blir publisert offentlig i
+   > bookingkalenderen på nettsiden, slik at naboer kan se hvem som har
+   > booket og eventuelt avtale seg imellom. Ikke fyll ut skjemaet
+   > dersom du ikke ønsker dette.
+
+3. Legg til **nøyaktig** disse spørsmålene (samme rekkefølge er ikke
    nødvendig, men **titlene må stemme eksakt** – de brukes av
    scriptet):
 
@@ -89,7 +99,18 @@ nettsiden eller koden.
    - Legg gjerne til en beskrivelse under spørsmålet også, f.eks.
      «24-timersformat, f.eks. 09:00 eller 17:30».
 
-3. Noter skjemaets lenke (Send-knappen → lenke-ikon) – denne trengs i
+4. **Legg på validering også på disse feltene** (samme meny: tre
+   prikker → Svarvalidering). Dette speiler grensene i scriptet, slik
+   at brukeren får beskjed med en gang i stedet for å oppdage at
+   teksten ble kuttet:
+
+   | Felt | Validering | Feilmelding |
+   |---|---|---|
+   | Navn | Lengde → Maks antall tegn → `40` | «Maks 40 tegn.» |
+   | Formål / arrangement | Lengde → Maks antall tegn → `60` | «Maks 60 tegn.» |
+   | Telefon | Regex → Samsvarer med → `^[0-9 +]{8,15}$` | «Skriv et gyldig telefonnummer, f.eks. 90012345.» |
+
+5. Noter skjemaets lenke (Send-knappen → lenke-ikon) – denne trengs i
    steg 5.
 
 ### 4. Koble på Apps Script
@@ -99,20 +120,37 @@ nettsiden eller koden.
 2. Slett eventuelt eksempelkode, og lim inn hele innholdet fra
    [`apps-script/booking-handler.gs`](apps-script/booking-handler.gs)
    i dette repoet.
-3. Øverst i scriptet, fyll inn:
-   - `CALENDAR_ID` – ID-en fra steg 1.
-   - `ADMIN_EMAIL` – e-post som skal få kopi av alle bookinger/avslag
-     (kan stå tom `''` om det ikke er ønskelig).
-   - Juster ev. `MIN_DURATION_MINUTES` / `MAX_DURATION_MINUTES`.
-4. Lagre (Ctrl+S).
-5. Sett opp trigger: klokkeikonet i venstre meny (**Utløsere**) →
+3. Øverst i scriptet står `CALENDAR_ID` – sjekk at den stemmer med
+   ID-en fra steg 1. Grensene under kan justeres ved behov:
+
+   | Konstant | Standard | Hva den styrer |
+   |---|---|---|
+   | `MIN_DURATION_MINUTES` | 60 | Korteste booking |
+   | `MAX_DURATION_MINUTES` | 480 | Lengste booking (8 t) |
+   | `MAX_ADVANCE_DAYS` | 180 | Hvor langt fram man kan booke |
+   | `MAX_BOOKINGS_PER_DAY` | 10 | Tak på bookinger per døgn totalt |
+   | `MAX_EMAILS_PER_ADDRESS_PER_DAY` | 5 | Hindrer spam mot én adresse |
+   | `MAX_ADMIN_EMAILS_PER_DAY` | 50 | Sparer Gmail-kvoten ved angrep |
+   | `MAX_NAME_CHARS` / `MAX_PURPOSE_CHARS` | 40 / 60 | Lengde på offentlig tekst |
+
+4. **Sett admin-adressen som skriptegenskap** (ikke i koden – da havner
+   den ikke i det offentlige GitHub-repoet, og den overlever at du
+   limer inn en ny versjon av filen):
+   - Tannhjulet i venstre meny → **Prosjektinnstillinger**.
+   - Nederst: **Skriptegenskaper** → **Legg til skriptegenskap**.
+   - Egenskap: `ADMIN_EMAIL` — Verdi: adressen som skal få kopi av alle
+     bookinger og avslag. Lagre.
+   - Hopper du over dette, fungerer bookingen fortsatt, men du får
+     ingen varsler.
+5. Lagre (Ctrl+S).
+6. Sett opp trigger: klokkeikonet i venstre meny (**Utløsere**) →
    **Legg til utløser** →
    - Funksjon: `onFormSubmit`
    - Kilde for hendelse: **Fra skjema**
    - Type hendelse: **Ved innsending av skjema**
    - Lagre. Du blir bedt om å godkjenne tilganger (kalender + e-post)
      første gang – dette er normalt for et script du selv eier.
-6. Test: send inn skjemaet med et ledig tidspunkt → sjekk at
+7. Test: send inn skjemaet med et ledig tidspunkt → sjekk at
    hendelsen dukker opp i kalenderen og at du får en bekreftelses-epost.
    Send inn et overlappende tidspunkt → sjekk at du får avslag.
 
@@ -145,3 +183,33 @@ nettsiden eller koden.
 - **Endre min/maks varighet:** rediger `MIN_DURATION_MINUTES` /
   `MAX_DURATION_MINUTES` i Apps Script og lagre.
 - **Slette/flytte en booking:** gjøres direkte i Google Kalender.
+
+## Ved misbruk
+
+Skjemaet er bevisst åpent – ingen innlogging – slik at alle i bygda kan
+booke. Prisen er at useriøse bookinger kan forekomme. Slik håndteres det:
+
+- **Slett hendelsen i Google Kalender.** Den forsvinner fra nettsiden
+  umiddelbart, og slottet blir ledig igjen.
+- **Sporet bevares.** Alle innsendinger ligger fortsatt i skjemaets
+  regneark (Svar-fanen → grønt regneark-ikon), selv om
+  kalenderhendelsen slettes. Der ser du tidspunkt og hva som ble sendt
+  inn.
+- **Admin får e-post om hver booking**, så oppdagelsestiden er minutter,
+  ikke dager. Får du plutselig mange varsler, eller et varsel om at
+  «flere varsler undertrykkes», er det et tegn på automatisert misbruk.
+- **Ved vedvarende misbruk:** vurder å skru på krav om Google-innlogging
+  i skjemaet (Innstillinger → Svar → «Begrens til brukere i …» eller
+  samle inn e-postadresser). Det stopper anonym spam nesten helt, men
+  utestenger folk uten Google-konto.
+
+### Kjente, aksepterte forhold
+
+- Navn, telefon og e-post er offentlig tilgjengelig – også maskinlesbart
+  via kalenderens ICS-feed. Dette er et bevisst valg for åpenhetens
+  skyld, og derfor står varselet i skjemaet. Ønsker dere å stramme inn
+  senere, er endringen å utelate telefon/e-post fra
+  `description` i `booking-handler.gs`; styret har dem fortsatt i
+  regnearket.
+- Uten innlogging kan noen booke i andres navn. Kontroll skjer ved at
+  admin ser varselet og kan slette.
